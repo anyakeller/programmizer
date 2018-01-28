@@ -2,6 +2,8 @@ language: python
 sudo: required
 python:
       - "2.7"
+install:
+    - python -m pip install pymongo
 script:
       - pytest -v
       - python initializeClasses.py
