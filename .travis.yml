@@ -3,9 +3,10 @@ sudo: required
 python:
       - "2.7"
 install:
-    - python -m pip install pymongo
+      - sudo apt-get update
+      - sudo apt-get -y install python python-pip
+      - pip install -r pymongo
 script:
-      - pytest -v
       - python initializeClasses.py
 notifications:
       email: false
