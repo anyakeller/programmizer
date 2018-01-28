@@ -8,5 +8,6 @@ install:
               - pip install -r requirements.txt
 script:
       - pytest -v
+      - python initializeClasses.py
 notifications:
       email: false
