@@ -30,5 +30,7 @@ course = {
     "numRegistered": 10,
     "sRegistered": [1,2,3,4,5,6,7,8,9,10]
     }
-
+db.classes.insert_one(course)
+mando  = db.classes.find_one({"name": "Mandarin ii 1 of 2"})
+print(mando)
 
