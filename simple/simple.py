@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 client = MongoClient(port=27017)
-db = client.simple4
+db = client.simple
 
 #format - each period is an individual entry (IK that's crazy)
 '''

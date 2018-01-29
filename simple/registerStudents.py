@@ -1,7 +1,7 @@
 import pprint
 from pymongo import MongoClient
 client = MongoClient(port=27017)
-db = client.simple4
+db = client.simple
 
 #required courses
 #show classes
@@ -63,4 +63,55 @@ def testEnroll():
     pp.pprint(db.students.find_one({'id':1}))
 
     pp.pprint(db.courses.find_one({'code':1}))
-testEnroll()
+#testEnroll()
+
+#unenrolls student based
+def unenrollByPeriod(sid,pd):
+    reqs = {
+        "freshman":[1,2,3,4,5,6],
+        "sophomore":[7,8,9,10,11,12],
+        "junior":[13,14,15,16,17,18],
+        "senior":[19,20,21,22,23],
+        "overall":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    }
+    #get student
+    student = db.students.find_one({'id':sid})
+    #check if student is enrolled that period
+    if not student["schedule"][str(pd)]:
+        return "Student not enrolled that period"
+    else:
+        code = student["schedule"][str(pd)].split("-")[0]
+        #get course
+        course = db.courses.find_one({'code':int(code)})
+        sections = course["sections"]
+        for sec in course["sections"]:
+            count = 0
+            if sec["section"] == student["schedule"][str(pd)].split("-")[1]:
+                sections [count]["numRegistered"] = sections[count]["numRegistered"] - 1
+                index = sections[count]["sRegistered"].index(sid)
+                del sections[count]["sRegistered"][index]
+                db.courses.update_one({'code': code}, {"$set":{"sections": sections}})
+            count = count + 1
+        schedule = student["schedule"]
+        schedule[str(sections[count]["period"])] = ""
+        db.students.update_one({'id': sid}, {"$set":{"schedule": schedule}})
+        filled = student["filledReqs"]
+        if int(code) in reqs["overall"]:
+            index = filled.index(int(code))
+            del filled[index]
+            db.students.update_one({'id':sid},{"$set":{"filledReqs":filled}})
+        return "Course removed"
+
+
+def testUnenroll():
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(db.students.find_one({'id':1}))
+
+    pp.pprint(db.courses.find_one({'code':1}))
+
+    print unenrollByPeriod(1,1)
+    print "after================================="
+    pp.pprint(db.students.find_one({'id':1}))
+
+    pp.pprint(db.courses.find_one({'code':1}))
+testUnenroll()
