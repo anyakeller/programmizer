@@ -63,7 +63,7 @@ def testEnroll():
     pp.pprint(db.students.find_one({'id':1}))
 
     pp.pprint(db.courses.find_one({'code':1}))
-#testEnroll()
+testEnroll()
 
 #unenrolls student based
 def unenrollByPeriod(sid,pd):
@@ -86,15 +86,20 @@ def unenrollByPeriod(sid,pd):
         sections = course["sections"]
         for sec in course["sections"]:
             count = 0
-            if sec["section"] == student["schedule"][str(pd)].split("-")[1]:
-                sections [count]["numRegistered"] = sections[count]["numRegistered"] - 1
-                index = sections[count]["sRegistered"].index(sid)
-                del sections[count]["sRegistered"][index]
-                db.courses.update_one({'code': code}, {"$set":{"sections": sections}})
+            if student["schedule"][str(pd)]:
+                comboCode = student["schedule"][str(pd)].split("-")
+                if sec["section"] == comboCode[1]:
+                    sec["numRegistered"] = sec["numRegistered"] - 1
+                    index = sec["sRegistered"].index(sid)
+                    del sec["sRegistered"][index]
+                    sections[count] = sec
+                    db.courses.update_one({'code': code}, {"$set":{"sections": sections}})
+
+#update student
+                    schedule = student["schedule"]
+                    schedule[str(sections[count]["period"])] = ""
+                    db.students.update_one({'id': sid}, {"$set":{"schedule": schedule}})
             count = count + 1
-        schedule = student["schedule"]
-        schedule[str(sections[count]["period"])] = ""
-        db.students.update_one({'id': sid}, {"$set":{"schedule": schedule}})
         filled = student["filledReqs"]
         if int(code) in reqs["overall"]:
             index = filled.index(int(code))

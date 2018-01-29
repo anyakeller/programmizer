@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 client = MongoClient(port=27017)
+client.drop_database('simple')
 db = client.simple
+
 
 #format - each period is an individual entry (IK that's crazy)
 '''
@@ -52,7 +54,6 @@ def setupFreshCourses():
         db.courses.insert_one(course)
 
 setupFreshCourses()
-print db.courses.find_one({'code': 4})
 
 #student structure
 #filled reqs, index of req filled in reqirement list
