@@ -22,7 +22,7 @@ course = {
     "name": "Mandarin ii 1 of 2",
     "code": "FMS63",
     "section": "1002",
-    "day": "M",
+    "day": "MTWRF",
     "period": 2,
     "room": 1033,
     "capacity": 20,
@@ -31,6 +31,18 @@ course = {
     "sRegistered": [1,2,3,4,5,6,7,8,9,10]
     }
 db.classes.insert_one(course)
-mando  = db.classes.find_one({"name": "Mandarin ii 1 of 2"})
-print(mando)
+course = {
+    "name": "Technical Graphic Communications",
+    "code": "TDS11",
+    "section": "1005",
+    "day": "MTWRF",
+    "period": 3,
+    "room": 1007,
+    "capacity": 20,
+    "isDouble": False,
+    "numRegistered": 10,
+    "sRegistered": [1,2,3,4,5,6,7,8,9,10]
+    }
+db.classes.insert_one(course)
+print db.classes.find_one({"name": "Mandarin ii 1 of 2"})
 
