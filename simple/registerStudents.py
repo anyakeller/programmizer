@@ -4,14 +4,6 @@ client = MongoClient(port=27017)
 db = client.simple4
 
 #required courses
-reqs = {
-    "freshman":[1,2,3,4,5,6],
-    "sophomore":[7,8,9,10,11,12],
-    "junior":[13,14,15,16,17,18],
-    "senior":[19,20,21,22,23],
-    "overall":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
-}
-
 #show classes
 def showClasses():
     for doc in db.courses.find():
@@ -21,6 +13,13 @@ def showClasses():
 
 #place student in class (student id, course code, and section)
 def enroll(sid,code,section):
+    reqs = {
+        "freshman":[1,2,3,4,5,6],
+        "sophomore":[7,8,9,10,11,12],
+        "junior":[13,14,15,16,17,18],
+        "senior":[19,20,21,22,23],
+        "overall":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    }
     #get course
     course = db.courses.find_one({'code':code})
     #get student
