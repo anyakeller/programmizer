@@ -21,20 +21,27 @@ def programCourses():
         studentreqs = studentreqs + student["additionalReqs"]
         print 'reqs needed ' + str(studentreqs)
         for req in studentreqs:
-            if req not in student["filledReqs"]:
+            if req not in student["completedCourses"]:
 #get course
                 for coursekey in db:
-                    if db[coursekey]["code"] == req:
-                        for section in db[coursekey]["sections"]:
-                            try:
-                                ans = register.enroll(student["id"],req,section["section"])
-                                if ans:
-                                    print 'Course '+ str(req) + ' added to student ' + str(student['id'])
+                    if db[coursekey]["code"] == req: #if found course
+                        for section in db[coursekey]["sections"]: #for each section try to register student
+                            ans = register.enroll(student["id"],req,section["section"])
+                            if ans == "Sucess":
+                                print 'Course '+ str(req) + ' added to student ' + str(student['id'])
+                                break
+                            else:
+                                print "Couldn't add " + str(req) + " to student " + str(student['id'])
+                                if ans == 1:
+                                    print "Error - student already enrolled in that class.  Moving on to next course to add."
+                                    break
+                                elif ans == 2:
+                                    print "Error - student alredy registered that period.  Trying next section."
+                                elif ans == 3:
+                                    print "Error - course already taken by student.  Moving on to next course to add."
                                     break
                                 else:
-                                    print "Couldn't add " + str(req) + " to student " + str(student['id'])
-                                    print 'student already enrolled that period'
-                            except:
-                                print "section full, trying next section..."
-                    ans = ""
+                                    print ans
+                                    print "also IDK why but we're going to try to add them to the next section or whatever..."
+                            ans = ""
 programCourses()

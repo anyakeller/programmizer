@@ -38,11 +38,11 @@ def enroll(sid,code,section):
             if sec["capacity"] == sec["numRegistered"]:
                 return "Error - Class full"
             elif  sid in sec["sRegistered"]:
-                return "Error - Student already in that class"
+                return 1 #"Error - Student already in that class"
             elif student["schedule"][str(sec["period"])] != '': #if they're taking a course that period
-                return "Error - already registered that period"
+                return 2 #"Error - already registered that period"
             elif code in student["completedCourses"]:  #if they already have that req filled
-                return "Error - class already taken"
+                return 3 #"Error - class already taken"
             else:
                 course["sections"][count]["numRegistered"] = course["sections"][count]["numRegistered"] + 1
                 course["sections"][count]["sRegistered"].append(sid)
