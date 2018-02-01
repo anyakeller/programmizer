@@ -19,17 +19,21 @@ def displayFreshCourses():
 
 def enroll(sid,code,section):
     db = couch["courses"]
-    _id = 0
+    _id = -10
     for doc in db:
         if db[doc]['code'] == code:
             _id = doc
+    if _id == -10:
+        return "course does not exsist"
     course = db[_id]
 
     dbs = couch["students"]
-    _id = 0
+    _id = -10
     for doc in dbs:
         if dbs[doc]['id'] == sid:
             _id = doc
+    if _id == -10:
+        return "student does not exsist"
     student = dbs[_id]
 
     count = 0
@@ -60,10 +64,12 @@ def enroll(sid,code,section):
 def deenroll(sid,pd):
 
     dbs = couch["students"]
-    _id = 0
+    _id = -10
     for doc in dbs:
         if dbs[doc]['id'] == sid:
             _id = doc
+    if _id == -10:
+        return "Student does not exsist"
     student = dbs[_id]
 
     if not student["schedule"][str(pd)]:
@@ -72,10 +78,12 @@ def deenroll(sid,pd):
         fullcode = student["schedule"][str(pd)].split("-")
         code = fullcode[0]
         db = couch["courses"]
-        _id = 0
+        _id = -10
         for doc in db:
             if db[doc]['code'] == int(code):
                 _id = doc
+        if _id == -10:
+            return "Course does not exsist"
         course = db[_id]
 
         #remove student from course
