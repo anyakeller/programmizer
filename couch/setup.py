@@ -14,14 +14,15 @@ def setupFreshCourses():
             "sections":[
                 {"section":"a","days":"MTWRF","period":1,"room":roomcount ,"double":False,"capacity":30,"numRegistered":0,"sRegistered":[]},
                 {"section":"b","days":"MTWRF","period":2,"room":roomcount + 1,"double":False,"capacity":30,"numRegistered":0,"sRegistered":[]},
-                {"section":"c","days":"MTWRF","period":3,"room":roomcount + 2,"double":False,"capacity":30,"numRegistered":0,"sRegistered":[]}
+                {"section":"c","days":"MTWRF","period":3,"room":roomcount + 2,"double":False,"capacity":30,"numRegistered":0,"sRegistered":[]},
+                {"section":"d","days":"MTWRF","period":4,"room":roomcount + 3,"double":False,"capacity":30,"numRegistered":0,"sRegistered":[]},
+                {"section":"e","days":"MTWRF","period":5,"room":roomcount + 4,"double":False,"capacity":30,"numRegistered":0,"sRegistered":[]},
+                {"section":"f","days":"MTWRF","period":6,"room":roomcount + 5,"double":False,"capacity":30,"numRegistered":0,"sRegistered":[]}
             ]
         }
         codecount = codecount + 1
-        roomcount = roomcount + 3
+        roomcount = roomcount + 6
         db.save(course)
-    for ids in db :
-        print ids
 
 setupFreshCourses()
 
@@ -39,7 +40,8 @@ def setupFreshmen():
         student = {
             "id":i,
             "grade":"freshman",
-            "filledReqs":[],
+            "additionalReqs":[4], #ie mando for this year
+            "completedCourses":[],
             "schedule":{
                 '1':'',
                 '2':'',
